@@ -1,5 +1,5 @@
-from feature_extraction import extract_features
-from dtw import calculate_dtw_cost
+from dtw.feature_extraction import extract_features
+from dtw.dtw import calculate_dtw_cost
 
 import os
 import librosa
@@ -39,7 +39,7 @@ class OOVHandler():
             
             cur_dtw = calculate_dtw_cost(y_features, s_features)
             min_dtw = min(cur_dtw, min_dtw)
-
+        print(min_dtw)
         if min_dtw > self.threshold:
             return False
         return True

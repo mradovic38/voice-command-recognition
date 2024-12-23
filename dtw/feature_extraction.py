@@ -22,8 +22,8 @@ def extract_features(y: np.ndarray, sr: int = 16000) -> np.ndarray:
     # MFCC extraction
     mfccs = librosa.feature.mfcc(y=y, sr=sr, n_mfcc=13)
 
-    # Normalize MFCCs individually per feature
-    mfccs = (mfccs - np.mean(mfccs, axis=1, keepdims=True)) / np.std(mfccs, axis=1, keepdims=True)
+    # Normalize MFCC
+    mfccs = (mfccs - np.mean(mfccs, axis=1, keepdims=True)) / (np.std(mfccs, axis=1, keepdims=True) + 1e-10)
     
     
     return mfccs.T  # Transpose to match the expected (time x feature) format

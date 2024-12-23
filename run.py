@@ -1,7 +1,7 @@
 from transcription_postprocessor import TranscriptionPostprocessor
 from gui import GUI
 
-from oov_check import OOVHandler
+from dtw import OOVHandler
 
 
 if __name__ =='__main__':

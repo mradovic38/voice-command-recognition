@@ -9,7 +9,7 @@ import os
 import base64
 import tqdm
 from huggingface_hub import hf_hub_download, HfApi
-from oov_check import OOVHandler
+from dtw import OOVHandler
 
 
 os.environ['HF_HOME'] = 'C:/Users/mihai/.cache/huggingface'
