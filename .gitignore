@@ -1,7 +1,6 @@
-dataset
 torch_datasets
 .venv
 __pycache__
 models
 models_cache
-*.wav
+vrata_test.wav
