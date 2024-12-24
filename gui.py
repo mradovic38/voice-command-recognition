@@ -9,18 +9,19 @@ import os
 import base64
 import tqdm
 from huggingface_hub import hf_hub_download, HfApi
-import time
+from dtw import OOVHandler
 
 
 os.environ['HF_HOME'] = 'C:/Users/mihai/.cache/huggingface'
 
 class GUI():
-    def __init__(self, model_name:str, postprocessor:TranscriptionPostprocessor, model_dir:str='model', 
-                 resources_dir:str='resources')-> None:
+    def __init__(self, model_name:str, postprocessor:TranscriptionPostprocessor, oov_handler:OOVHandler=None, 
+                 model_dir:str='model', resources_dir:str='resources')-> None:
         self.model_name = model_name
         self.model_dir=model_dir
         self.resources = resources_dir
         self.postprocessor = postprocessor
+        self.oov_handler = oov_handler
 
         self.processor = None
         self.model = None
@@ -242,15 +243,26 @@ class GUI():
         )
         sd.wait()
         return audio.flatten()
-
-
-
+    
     def _on_record_button_press(self):
         audio_data = self._record_audio()
 
-        transcription = self._predict_word(audio_data)
+        oov_check = True
+        if self.oov_handler:
+            oov_check = self.oov_handler.check_if_oov(audio_data)
+
+        if oov_check:
+            transcription = self._predict_word(audio_data)
+            if not transcription:
+                transcription = 'No trigger word detected.'
+        else:
+            transcription = 'No trigger word detected.'
+
         if transcription:
             self._process_command(transcription)
+            
         self._update_status_labels()
+        
+
         st.write(f"Transcription: {transcription}")
 
