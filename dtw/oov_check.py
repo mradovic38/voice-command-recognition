@@ -6,7 +6,7 @@ import librosa
 import numpy as np
 
 class OOVHandler():
-    def __init__(self, dataset_dir:str='dataset', threshold:float=.15, sr:int=16000, username_if_in_dataset:str=None) -> None:
+    def __init__(self, dataset_dir:str='dataset', threshold:float=.018, sr:int=16000, username_if_in_dataset:str=None) -> None:
         self.sr = sr
         self.threshold = threshold
 
