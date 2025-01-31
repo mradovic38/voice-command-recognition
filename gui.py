@@ -1,8 +1,9 @@
 from transcription_postprocessor import TranscriptionPostprocessor
 
 import streamlit as st
-import sounddevice as sd
-import numpy as np
+from audio_recorder_streamlit import audio_recorder
+import librosa
+import io
 from transformers import Wav2Vec2ForCTC, Wav2Vec2Processor
 import torch
 import os
@@ -104,8 +105,9 @@ class GUI():
         
         first_time = True
 
-        if st.button("Press to Record"):
-            self._on_record_button_press()
+        audio_bytes = audio_recorder(pause_threshold=1, )
+        if audio_bytes:
+            self._on_record_button_press(audio_bytes)
         elif first_time:
             first_time = False
             self._update_status_labels()
@@ -234,25 +236,17 @@ class GUI():
             st.error(f"Error during transcription: {str(e)}")
             return None
 
-    def _record_audio(self, duration=2, fs=16000, dtype=np.float32):
-        audio = sd.rec(
-            int(fs * duration),
-            samplerate=fs,
-            channels=1,
-            dtype=dtype,
+    def _on_record_button_press(self, audio_data):
+        audio, _ = librosa.load(
+            io.BytesIO(audio_data),  # Convert bytes to a file-like object
+            sr=16000,               # Resample to 16k sample rate
         )
-        sd.wait()
-        return audio.flatten()
-    
-    def _on_record_button_press(self):
-        audio_data = self._record_audio()
-
         oov_check = True
         if self.oov_handler:
-            oov_check = self.oov_handler.check_if_oov(audio_data)
+            oov_check = self.oov_handler.check_if_oov(audio)
 
         if oov_check:
-            transcription = self._predict_word(audio_data)
+            transcription = self._predict_word(audio)
             if not transcription:
                 transcription = 'No trigger word detected.'
         else:
