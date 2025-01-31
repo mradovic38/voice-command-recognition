@@ -5,14 +5,18 @@ Smart home controller simulator, receiving voice commands from a microphone.\
 Trained to detect the words: "vrata", "svetlo", "zvuk", "otvori", "zatvori", "uključi" and "isključi" to control the state of door, lights and audio in a smart home system.
 
 ## ❓ How to Run
-  1. Clone the repository:
-  ```bash
-  git clone https://github.com/mradovic38/voice-command-recognition
-  ```
-  2. Run the following command in terminal:
-  ```bash
-  streamlit run run.py
-  ```
+### Online
+Visit: https://smart-home-serbian-voice-controller.streamlit.app
+    
+### Locally
+1. Clone the repository:
+```bash
+git clone https://github.com/mradovic38/voice-command-recognition
+```
+2. Run the following command in terminal:
+```bash
+streamlit run run.py
+```
 
 ## 🤖 [Augmentation and Preprocessing](data_augmentation.py)
 
