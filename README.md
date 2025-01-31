@@ -5,6 +5,14 @@ Smart home controller simulator, receiving voice commands from a microphone.\
 Trained to detect the words: "vrata", "svetlo", "zvuk", "otvori", "zatvori", "uključi" and "isključi" to control the state of door, lights and audio in a smart home system.
 
 ## ❓ How to Run
+  1. Clone the repository:
+  ```bash
+  git clone https://github.com/mradovic38/voice-command-recognition
+  ```
+  2. Run the following command in terminal:
+  ```bash
+  streamlit run run.py
+  ```
 
 ## 🤖 [Augmentation and Preprocessing](data_augmentation.py)
 
@@ -24,6 +32,19 @@ The model was fine-tuned for 100 epochs with batch size of 8 since the dataset i
 
 Fine-tuned model is available on Hugging Face 🤗 on the following link: \
 [wav2vec2-large-xlsr-53-serbian-smart-home-commands](https://huggingface.co/mradovic38/wav2vec2-large-xlsr-53-serbian-smart-home-commands) 
+
+<img src="https://github.com/user-attachments/assets/b672db3d-94e9-453c-854c-21745db885f3" width=70%>\
+*Figure 1: Training loss over time.*
+
+\
+<img src="https://github.com/user-attachments/assets/fe5085c8-51ca-4b9a-83f2-b6e05229fdec" width=70%>\
+*Figure 2: Validation loss over time.*
+
+\
+<img src="https://github.com/user-attachments/assets/cc6a42ef-002d-407c-b219-1914e232a663" width=70%>\
+*Figure 2: Validation WER over time.*
+
+
 
 ## 🔇 [Out-Of-Vocabulary Detection](dtw/oov_check.py)
 
