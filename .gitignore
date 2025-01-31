@@ -1,6 +1,8 @@
 torch_datasets
 .venv
+.env
 __pycache__
 models
 models_cache
 vrata_test.wav
+dataset

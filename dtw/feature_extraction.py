@@ -20,12 +20,12 @@ def extract_features(y: np.ndarray, sr: int = 16000) -> np.ndarray:
     y = librosa.util.normalize(y)
 
     # Frame size and hop size
-    frame_size = int(0.025 * sr)  # 25 ms
-    hop_size = int(0.010 * sr)   # 10 ms
+    frame_size = int(0.03 * sr)  # 30 ms
+    hop_size = int(0.015 * sr)   # 15 ms
 
     # Extract MFCC features
     mfccs = librosa.feature.mfcc(
-        y=y, sr=sr, n_mfcc=13, n_fft=512, hop_length=hop_size, window='hamming'
+        y=y, sr=sr, n_mfcc=13, n_fft=frame_size, hop_length=hop_size, window='hamming'
     )
 
     # Compute Delta and Delta-Delta features

@@ -6,7 +6,7 @@ from dtw import OOVHandler
 
 if __name__ =='__main__':
     postprocessor = TranscriptionPostprocessor()
-    oov_handler = OOVHandler('dataset', threshold=0.018, sr=16000, username_if_in_dataset='38-21')
+    oov_handler = OOVHandler('dataset', threshold=0.0095, sr=16000, username_if_in_dataset='38-21')
 
     smart_gui = GUI(model_name="mradovic38/wav2vec2-large-xlsr-53-serbian-smart-home-commands",
                     postprocessor=postprocessor,
