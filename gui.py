@@ -13,11 +13,10 @@ from huggingface_hub import hf_hub_download, HfApi
 from dtw import OOVHandler
 
 
-os.environ['HF_HOME'] = 'C:/Users/mihai/.cache/huggingface'
 
 class GUI():
     def __init__(self, model_name:str, postprocessor:TranscriptionPostprocessor, oov_handler:OOVHandler=None, 
-                 model_dir:str='model', resources_dir:str='resources')-> None:
+                 model_dir:str='model', resources_dir:str='resources', use_cache:bool=False)-> None:
         self.model_name = model_name
         self.model_dir=model_dir
         self.resources = resources_dir
@@ -26,8 +25,11 @@ class GUI():
 
         self.processor = None
         self.model = None
-        self._download_model_if_not_present()
-        self._load_model()
+        path = model_name
+        if use_cache:
+            self._download_model_if_not_present()
+            path = model_dir
+        self._load_model(path)
 
     def _download_model_if_not_present(self):
         """Downloads the model from Hugging Face if it's not already present in the project directory."""
@@ -78,20 +80,23 @@ class GUI():
             st.error(f"Error during model file download: {str(e)}")
             raise
 
-    def _load_model(self):
+    def _load_model(self, path:str):
         """Loads the model from the local directory."""
         try:
-            # Load the processor and model from local files
-            self.processor = Wav2Vec2Processor.from_pretrained(self.model_dir)
-            self.model = Wav2Vec2ForCTC.from_pretrained(self.model_dir)
+            # Load the processor and model
+            self.processor = Wav2Vec2Processor.from_pretrained(path)
+            self.model = Wav2Vec2ForCTC.from_pretrained(path)
         except Exception as e:
             st.error(f"Error loading model from local directory: {str(e)}")
             raise
 
     def run(self):
+        
         st.title("Smart Home Voice Control")
         
-        
+        audio_bytes = audio_recorder(pause_threshold=2, sample_rate=16000)
+        if audio_bytes:
+            self._on_record_button_press(audio_bytes)
         # Initialize session state
         if 'system_state' not in st.session_state:
             st.session_state.system_state = {
@@ -102,15 +107,11 @@ class GUI():
                 'sound_selected': False,
                 'light_selected': False,
             }
-        
-        first_time = True
+            self._update_status_labels()
 
-        audio_bytes = audio_recorder(pause_threshold=2, sample_rate=16000)
-        if audio_bytes:
-            self._on_record_button_press(audio_bytes)
-        # if first_time:
-        #     first_time = False
-        #     self._update_status_labels()
+        
+            
+        
        
 
     def _process_command(self, command):
