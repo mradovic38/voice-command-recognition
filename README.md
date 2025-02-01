@@ -8,12 +8,21 @@ Trained to detect the words: "vrata", "svetlo", "zvuk", "otvori", "zatvori", "uk
 ### Online
 Visit: https://smart-home-serbian-voice-controller.streamlit.app
     
-### Locally
+### Locally (faster)
 1. Clone the repository:
 ```bash
 git clone https://github.com/mradovic38/voice-command-recognition
 ```
-2. Run the following command in terminal:
+
+2. Install requiered dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Use cache\
+In [run.py](run.py) pass the argument `use_cache=True` in the constructor of the GUI class instance to ensure better processing speed.
+
+4. Run the following command to start the program:
 ```bash
 streamlit run run.py
 ```
